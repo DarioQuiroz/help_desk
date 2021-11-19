@@ -7,10 +7,10 @@
         protected function Conexion(){
             try {
                 //Local
-				//$conectar = $this->dbh = new PDO("mysql:local=localhost;dbname=andercode_helpdesk1","root","");
+				$conectar = $this->dbh = new PDO("mysql:local=localhost;dbname=andercode_helpdesk","root","");
                 //Produccion
                 
-                $conectar = $this->dbh = new PDO("mysql:host=sql5c75f.carrierzone.com;dbname=ticket_sysredcomm945542","sysredcomm945542","Ticket12");
+               // $conectar = $this->dbh = new PDO("mysql:host=sql5c75f.carrierzone.com;dbname=ticket_sysredcomm945542","sysredcomm945542","Ticket12");
 				return $conectar;
 			} catch (Exception $e) {
 				print "¡Error BD!: " . $e->getMessage() . "<br/>";
@@ -24,9 +24,9 @@
 
         public static function ruta(){
             //Local
-			//return "http://localhost/proyec_vender/";
+			return "http://localhost/help_desk/";
             //Produccion
-            return "http://sysred.com.mx/proyec_vender/";
+           // return "http://sysred.com.mx/proyec_vender/";
 		}
 
     }
