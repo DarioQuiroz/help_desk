@@ -7,6 +7,11 @@ function init(){
         guardar(e);	
     });
 }
+function init(){
+    $("#ticket_form1").on("submit",function(e){
+        facturar(e);	
+    });
+}
 
 
 $(document).ready(function(){
@@ -43,11 +48,23 @@ $(document).ready(function(){
             "bDestroy": true,
             "columnDefs": [
                 {
-                    "targets": [ 7 ],
+                    "targets": [ 1 ],
                     "visible": false,
                     "searchable": false
-                }
-            ],
+                }  , {
+                    "targets": [ 2 ],
+                    "visible": false,
+                    "searchable": false
+                }  , {
+                    "targets": [ 3 ],
+                    "visible": false,
+                    "searchable": false
+                }  ,
+                {
+                    "targets": [ 8],
+                    "visible": false,
+                    "searchable": false
+                }         ],
             "responsive": true,
             "bInfo":true,
             "iDisplayLength": 11,
@@ -105,10 +122,23 @@ $(document).ready(function(){
             "bInfo":true,
             "columnDefs": [
                 {
-                    "targets": [ 7 ],
+                    "targets": [ 1 ],
                     "visible": false,
                     "searchable": false
-                }
+                }  , {
+                    "targets": [ 2 ],
+                    "visible": false,
+                    "searchable": false
+                }  , {
+                    "targets": [ 3 ],
+                    "visible": false,
+                    "searchable": false
+                }  ,
+                {
+                    "targets": [ 8],
+                    "visible": false,
+                    "searchable": false
+                }  
             ],
             "iDisplayLength": 10,
             "autoWidth": false,
@@ -156,6 +186,19 @@ function asignar(tick_id){
  
 }
 
+function factura(tick_id){
+
+    $.post("../../controller/ticket.php?op=mostrar", {tick_id : tick_id}, function (data) {
+        data = JSON.parse(data);
+        $('#tick_id1').val(data.tick_id);
+
+        $('#mdltitulo').html('Asignar factura');
+        $("#modal_factura").modal('show');
+    });
+ 
+}
+
+
 function guardar(e){
     e.preventDefault();
 	var formData = new FormData($("#ticket_form")[0]);
@@ -178,5 +221,33 @@ function guardar(e){
         }
     });
 }
+
+
+function facturar(e){
+    e.preventDefault();
+	var formData = new FormData($("#ticket_form1")[0]);
+    alert("aqui entra a la funcion que pide facturar");
+    $.ajax({
+        url: "../../controller/ticket.php?op=factura",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(datos){
+            var tick_id1 = $('#tick_id1').val();
+           
+            $.post("../../controller/email.php?op=ticket_asignado", {tick_id : tick_id}, function (data) {
+
+            });
+            swal("Correcto!", "facturado Correctamente", "success");
+
+            $("#modal_factura").modal('hide');
+            $('#ticket_data').DataTable().ajax.reload();
+        }
+    });
+    alert("aqui debió enviarla");
+
+}
+
 
 init();

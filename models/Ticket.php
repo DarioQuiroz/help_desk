@@ -33,10 +33,13 @@ class Ticket extends Conectar
                 tm_ticket.tick_Usuario,
                 tm_ticket.tick_descrip,
                 tm_ticket.tick_estado,
+                tm_ticket.hora_inicial,
+                tm_ticket.hora_final,
                 tm_usuario.Empresa,
                 tm_ticket.fech_crea,
                 tm_ticket.usu_asig,
                 tm_ticket.fech_asig,
+                tm_ticket.factura,
                 tm_usuario.usu_nom,
                 tm_usuario.usu_ape,
                 tm_categoria.cat_nom
@@ -65,8 +68,11 @@ class Ticket extends Conectar
                 tm_ticket.tick_Usuario,
                 tm_ticket.tick_descrip,
                 tm_ticket.tick_estado,
+                tm_ticket.hora_inicial,
+                tm_ticket.hora_final,
                 tm_usuario.Empresa,
                 tm_ticket.fech_crea,
+                tm_ticket.factura,
                 tm_usuario.usu_nom,
                 tm_usuario.usu_ape,
                 tm_usuario.usu_correo,
@@ -96,11 +102,14 @@ class Ticket extends Conectar
                 tm_ticket.tick_titulo,
                 tm_ticket.tick_descrip,
                 tm_ticket.tick_estado,
+                tm_ticket.hora_inicial,
+                tm_ticket.hora_final,
                 tm_ticket.tick_Usuario,
                 tm_ticket.tick_descrip,
                 tm_ticket.fech_crea,
                 tm_ticket.usu_asig,
                 tm_ticket.fech_asig,
+                tm_ticket.factura,
                 tm_usuario.usu_nom,
                 tm_usuario.usu_ape,
               
@@ -157,7 +166,7 @@ class Ticket extends Conectar
     {
         $conectar = parent::conexion();
         parent::set_names();
-        $sql = "call sp_i_ticketdetalle_01(?,?)";
+        $sql = "INSERT INTO td_ticketdetalle (tickd_id,tick_id,usu_id,tickd_descrip,fech_crea,est) VALUES (NULL,?,?,Ticket cerrado...,now(),'1');";
         $sql = $conectar->prepare($sql);
         $sql->bindValue(1, $tick_id);
         $sql->bindValue(2, $usu_id);
@@ -165,17 +174,20 @@ class Ticket extends Conectar
         return $resultado = $sql->fetchAll();
     }
 
-    public function update_ticket($tick_id)
+    public function update_ticket($tick_id, $hora_inicial, $hora_final)
     {
         $conectar = parent::conexion();
         parent::set_names();
         $sql = "update tm_ticket 
-                set	
+                set	hora_inicial=?,
+                    hora_final=?,
                     tick_estado = 'Cerrado'
                 where
                     tick_id = ?";
         $sql = $conectar->prepare($sql);
-        $sql->bindValue(1, $tick_id);
+        $sql->bindValue(1, $hora_inicial);
+        $sql->bindValue(2, $hora_final);
+        $sql->bindValue(3, $tick_id);
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }
@@ -196,6 +208,24 @@ class Ticket extends Conectar
         $sql->execute();
         return $resultado = $sql->fetchAll();
     }
+
+    public function update_ticket_facturar($tick_id, $factura)
+    {
+        $conectar = parent::conexion();
+        parent::set_names();
+        $sql = "update tm_ticket 
+                set	
+                factura = ?,
+                    fech_asig = now()
+                where
+                    tick_id = ?";
+        $sql = $conectar->prepare($sql);
+        $sql->bindValue(1, $factura);
+        $sql->bindValue(2, $tick_id);
+        $sql->execute();
+        return $resultado = $sql->fetchAll();
+    }
+
 
     public function get_ticket_total()
     {

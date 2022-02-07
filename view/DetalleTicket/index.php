@@ -5,7 +5,7 @@ if (isset($_SESSION["usu_id"])) {
   <!DOCTYPE html>
   <html>
   <?php require_once("../MainHead/head.php"); ?>
-  <title>AnderCode</>::Detalle Ticket</title>
+  <title>SySRed</>::Detalle Ticket</title>
   </head>
 
   <body class="with-side-menu">
@@ -105,28 +105,46 @@ if (isset($_SESSION["usu_id"])) {
                 </div>
               </fieldset>
             </div>
-            
-			<div class="col-lg-6">
-				<div class="col-lg-6">
-					<fieldset class="form-group">
-							<label class="form-label semibold" for="exampleInput">Hora inicial de atención</label>
-							<input id="hora_inicial" type="datetime-local">
-					</fieldset>
-				</div>
 
-			
-				<div class="col-lg-6">
-					<fieldset class="form-group">
-						<label class="form-label semibold" for="exampleInput">Hora final de atención</label>
-						<input id="hora_final" type="datetime-local">
-					</fieldset>
-				</div>
-			</div>
-              <div class="col-lg-12">
-                <button type="button" id="btnenviar" class="btn btn-rounded btn-inline btn-primary">Enviar</button>
-                <button type="button" id="btncerrarticket" class="btn btn-rounded btn-inline btn-warning">Cerrar Ticket</button>
-              </div>
-            
+
+            <div class="col-lg-12">
+              <button type="button" id="btnenviar" class="btn btn-rounded btn-inline btn-primary">Enviar</button>
+            </div>
+
+
+            <?php if ($_SESSION["rol_id"] == 2) {
+
+            ?>
+
+              <form action="">
+                <div class="col-lg-6">
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="hora_inicial" require>Hora inicial de atención</label>
+                      <input id="hora_inicial" type="datetime-local">
+                    </fieldset>
+                  </div>
+
+
+                  <div class="col-lg-6">
+                    <fieldset class="form-group">
+                      <label class="form-label semibold" for="hora_final" require>Hora final de atención</label>
+                      <input id="hora_final" type="datetime-local">
+                    </fieldset>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <button type="button" id="btncerrarticket" class="btn btn-rounded btn-inline btn-warning">Cerrar Ticket</button>
+                </div>
+
+              </form><?php
+                    } else {
+                      # code...
+                    }
+                      ?>
+
+
+
           </div>
         </div>
 

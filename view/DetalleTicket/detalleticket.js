@@ -130,7 +130,9 @@ $(document).on("click","#btncerrarticket", function(){
         if (isConfirm) {
             var tick_id = getUrlParameter('ID');
             var usu_id = $('#user_idx').val();
-            $.post("../../controller/ticket.php?op=update", { tick_id : tick_id,usu_id : usu_id }, function (data) {
+            var hora_inicial=$('#hora_inicial').val();
+            var hora_final=$('#hora_final').val();
+            $.post("../../controller/ticket.php?op=update", { tick_id : tick_id,usu_id : usu_id, hora_inicial : hora_inicial, hora_final:hora_final }, function (data) {
 
             });
 
